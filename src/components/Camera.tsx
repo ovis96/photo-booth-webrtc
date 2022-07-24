@@ -3,6 +3,7 @@ import { getVideoCamera } from "../webrtc.utils";
 
 const Camera = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
 
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [images, setImages] = useState<string[]>([]);
@@ -33,10 +34,15 @@ const Camera = () => {
     setImages((images) => [...images, base64Image as string]);
   };
 
-  console.log("~~~ images", images);
+  useEffect(() => {
+    imageContainerRef.current?.scrollTo(
+      0,
+      imageContainerRef.current.scrollHeight
+    );
+  }, [images]);
 
   return (
-    <div>
+    <div className="flex flex-row">
       <div>
         <video ref={videoRef} autoPlay muted />
         <div>
@@ -44,10 +50,14 @@ const Camera = () => {
         </div>
       </div>
 
-      <div>
+      <div
+        ref={imageContainerRef}
+        className="h-[480px] border border-slate-500 w-[300px] overflow-scroll"
+      >
         {images.map((image, index) => {
           return <img key={index} src={image} />;
         })}
+        {images.length === 0 && <div>Your photos will appear here</div>}
       </div>
     </div>
   );
