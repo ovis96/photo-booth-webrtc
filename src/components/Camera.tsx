@@ -35,10 +35,13 @@ const Camera = () => {
   };
 
   useEffect(() => {
-    imageContainerRef.current?.scrollTo(
-      0,
-      imageContainerRef.current.scrollHeight
-    );
+    // Note Ovishek: set timeout b/c need to wait till the images loads.
+    setTimeout(() => {
+      imageContainerRef.current?.scrollTo(
+        0,
+        imageContainerRef.current.scrollHeight
+      );
+    }, 100);
   }, [images]);
 
   return (
